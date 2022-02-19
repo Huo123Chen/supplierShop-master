@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="co.yixiang.shop.mapper.StoreSlideshowMapper">
+    
+
+
+    <resultMap type="co.yixiang.shop.domain.StoreSlideshow" id="StoreSlideshowResult">
+        <result property="id"    column="id"    />
+        <result property="slideshowLogo"    column="slideshow_logo"    />
+        <result property="slideshowTitle"    column="slideshow_title"    />
+        <result property="slideshowDesc"    column="slideshow_desc"    />
+        <result property="slideshowSort"    column="slideshow_sort"    />
+        <result property="slideshowStatus"    column="slideshow_status"    />
+        <result property="isDeleted"    column="is_deleted"    />
+        <result property="createAt"    column="create_at"    />
+    </resultMap>
+
+    <sql id="selectStoreSlideshowVo">
+        select id, slideshow_logo, slideshow_title, slideshow_desc, slideshow_sort, slideshow_status, is_deleted, create_at from store_slideshow
+    </sql>
+
+    <select id="selectStoreSlideshowList" parameterType="co.yixiang.shop.domain.StoreSlideshow" resultMap="StoreSlideshowResult">
+        <include refid="selectStoreSlideshowVo"/>
+        <where>
+            <if test="slideshowLogo != null  and slideshowLogo != ''"> and slideshow_logo = #{slideshowLogo}</if>
+            <if test="slideshowTitle != null  and slideshowTitle != ''"> and slideshow_title = #{slideshowTitle}</if>
+            <if test="slideshowDesc != null  and slideshowDesc != ''"> and slideshow_desc = #{slideshowDesc}</if>
+            <if test="slideshowSort != null  and slideshowSort != ''"> and slideshow_sort = #{slideshowSort}</if>
+            <if test="slideshowStatus != null  and slideshowStatus != ''"> and slideshow_status = #{slideshowStatus}</if>
+            <if test="isDeleted != null  and isDeleted != ''"> and is_deleted = #{isDeleted}</if>
+            <if test="createAt != null "> and create_at = #{createAt}</if>
+        </where>
+    </select>
+
+    <select id="selectStoreSlideshowById" parameterType="String" resultMap="StoreSlideshowResult">
+        <include refid="selectStoreSlideshowVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertStoreSlideshow" parameterType="co.yixiang.shop.domain.StoreSlideshow" useGeneratedKeys="true" keyProperty="id">
+        insert into store_slideshow
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="slideshowLogo != null">slideshow_logo,</if>
+            <if test="slideshowTitle != null">slideshow_title,</if>
+            <if test="slideshowDesc != null">slideshow_desc,</if>
+            <if test="slideshowSort != null">slideshow_sort,</if>
+            <if test="slideshowStatus != null">slideshow_status,</if>
+            <if test="isDeleted != null">is_deleted,</if>
+            <if test="createAt != null">create_at,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="slideshowLogo != null">#{slideshowLogo},</if>
+            <if test="slideshowTitle != null">#{slideshowTitle},</if>
+            <if test="slideshowDesc != null">#{slideshowDesc},</if>
+            <if test="slideshowSort != null">#{slideshowSort},</if>
+            <if test="slideshowStatus != null">#{slideshowStatus},</if>
+            <if test="isDeleted != null">#{isDeleted},</if>
+            <if test="createAt != null">#{createAt},</if>
+        </trim>
+    </insert>
+
+    <update id="updateStoreSlideshow" parameterType="co.yixiang.shop.domain.StoreSlideshow">
+        update store_slideshow
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="slideshowLogo != null">slideshow_logo = #{slideshowLogo},</if>
+            <if test="slideshowTitle != null">slideshow_title = #{slideshowTitle},</if>
+            <if test="slideshowDesc != null">slideshow_desc = #{slideshowDesc},</if>
+            <if test="slideshowSort != null">slideshow_sort = #{slideshowSort},</if>
+            <if test="slideshowStatus != null">slideshow_status = #{slideshowStatus},</if>
+            <if test="isDeleted != null">is_deleted = #{isDeleted},</if>
+            <if test="createAt != null">create_at = #{createAt},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteStoreSlideshowById" parameterType="String">
+        delete from store_slideshow where id = #{id}
+    </delete>
+
+    <delete id="deleteStoreSlideshowByIds" parameterType="String">
+        delete from store_slideshow where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
